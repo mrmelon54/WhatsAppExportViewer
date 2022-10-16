@@ -1,6 +1,6 @@
-# Svelte + Vite + Electron
+# WhatsApp Export Viewer
 
-Clean example that combines [svelte vite](https://vitejs.dev/) and [electron](https://www.electronjs.org/).
+Rebuild of [WhatsApp Export Viewer Old](https://github.com/MrMelon54/WhatsAppExportViewer-Old) from the ground up.
 
 Start with: `npm start`
 
@@ -12,46 +12,4 @@ Build with `npm run build`
 
 Enjoy!
 
-## Structure
-
-* `src/index.js` - Electron entrypoint for app
-* `src/renderer/index.html` - Renderer entrypoint for electron
-
-## Reproduction Steps
-
-To redo this repo:
-
-1. `npm init vite@latest`, select svelte.
-2. Copy `public`, `src`, `index.html` to `src/renderer`. You can remote the fluff like `.vscode`.
-3. Add more dependencies `npm install --save-dev electron electron-builder concurrently`
-4. Edit `package.json`:
-    * delete line with `"type": "module",`
-    * add `"main": "src/index.js",`
-    * add scripts:
-      ```json
-      "scripts": {
-        "start": "NODE_ENV=development concurrently 'npm run web:watch' 'sleep 1 && npm run electron:start'",
-        "web:watch": "vite",
-        "electron:start": "electron src",
-        "build": "vite build && electron-builder"
-      }
-      ```
-    * add build options for electron-builder:
-      ```json
-      "build": {
-        "files": [
-          "src/**/*"
-        ]
-      }
-      ```
-4. Create `src/index.js`. Follow getting started guide in [Electron](https://www.electronjs.org/docs/latest/tutorial/quick-start) and when creating the window, use something like this:
-    ```js
-    if (process.env.NODE_ENV !== 'development') {
-      // Load production build
-      win.loadFile(`${__dirname}/renderer/dist/index.html`)
-    } else {
-      // Load vite dev server page 
-      console.log('Development mode')
-      win.loadURL('http://localhost:3000/')
-    }
-    ```
+Powered by: [Svelte](https://svelte.dev) + [Vite](https://vitejs.dev) + [Electron](https://electronjs.org)
