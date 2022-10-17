@@ -8,6 +8,11 @@ const path = require("path");
 const readLinesN2M = require("./utils/ReadLinesN2M");
 const countLines = require("./utils/CountLines");
 const makeDir = require("make-dir");
+const envPaths = require("env-paths");
+
+// app paths
+const appPaths = envPaths.default("WhatsAppExportViewer");
+console.log("Using app config path:", appPaths.config);
 
 var currentPackage;
 
@@ -77,64 +82,59 @@ function createWindow() {
   }
 }
 
-(async () => {
-  const envPaths = await import("env-paths");
-  const appPaths = envPaths.default("WhatsAppExportViewer");
+app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify();
+});
 
-  app.on("ready", () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
-
-  app.whenReady().then(() => {
-    ipcMain.handle("file:countLines", async (_, p) => await new Promise((resolve, _) => countLines(p, n => resolve(n))));
-    ipcMain.handle(
-      "file:readLines",
-      async (_, p, n, m) =>
-        await new Promise((resolve, _) => {
-          let lines = [];
-          readLinesN2M(
-            p,
-            n,
-            m,
-            line => lines.push(line),
-            () => resolve(lines),
-          );
-        }),
-    );
-    ipcMain.handle("config:load", () => {
-      return new Promise((resolve, _) => {
-        fs.readFile(path.join(appPaths.config, "config.json"), {encoding: "utf8"}, (error, data) => {
-          if (error) resolve(defaultConfig());
-          else {
-            let j;
-            try {
-              j = JSON.parse(data);
-            } catch (e) {
-              j = {};
-            }
-            resolve(Object.assign(defaultConfig(), j));
+app.whenReady().then(() => {
+  ipcMain.handle("file:countLines", async (_, p) => await new Promise((resolve, _) => countLines(p, n => resolve(n))));
+  ipcMain.handle(
+    "file:readLines",
+    async (_, p, n, m) =>
+      await new Promise((resolve, _) => {
+        let lines = [];
+        readLinesN2M(
+          p,
+          n,
+          m,
+          line => lines.push(line),
+          () => resolve(lines),
+        );
+      }),
+  );
+  ipcMain.handle("config:load", () => {
+    return new Promise((resolve, _) => {
+      fs.readFile(path.join(appPaths.config, "config.json"), {encoding: "utf8"}, (error, data) => {
+        if (error) resolve(defaultConfig());
+        else {
+          let j;
+          try {
+            j = JSON.parse(data);
+          } catch (e) {
+            j = {};
           }
-        });
+          resolve(Object.assign(defaultConfig(), j));
+        }
       });
     });
-    ipcMain.handle("config:save", (_event, data) => {
-      return new Promise((resolve, reject) => {
-        makeDir.sync(appPaths.config);
-        fs.writeFile(path.join(appPaths.config, "config.json"), JSON.stringify(data, null, 2), error => {
-          if (error) reject(error);
-          else resolve();
-        });
+  });
+  ipcMain.handle("config:save", (_event, data) => {
+    return new Promise((resolve, reject) => {
+      makeDir.sync(appPaths.config);
+      fs.writeFile(path.join(appPaths.config, "config.json"), JSON.stringify(data, null, 2), error => {
+        if (error) reject(error);
+        else resolve();
       });
-    });
-
-    createWindow();
-
-    app.on("activate", function () {
-      if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
   });
 
-  app.on("window-all-closed", function () {
-    if (process.platform !== "darwin") app.quit();
+  createWindow();
+
+  app.on("activate", function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-})();
+});
+
+app.on("window-all-closed", function () {
+  if (process.platform !== "darwin") app.quit();
+});
