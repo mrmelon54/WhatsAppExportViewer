@@ -1,12 +1,25 @@
 <script>
   import Select, {Option} from "@smui/select";
   import IconButton from "@smui/icon-button";
+  import {onMount} from "svelte";
+  import ErrorDialog from "./ErrorDialog.svelte";
+  import ChatData from "../api/ChatData";
+  import ChatBubbleList from "./ChatBubbleList.svelte";
+
+  const pageLines = 1000;
 
   let pageIndex = 0;
   let pageTotal = 5;
   let isLoading = false;
   let isDragging = false;
   let loadedChat = null;
+  let errorData = null;
+
+  onMount(() => {
+    window.electronAPI.handleFileOpen((_event, args) => {
+      if (args.length >= 1) openFile(args[0]);
+    });
+  });
 
   function leftClick() {
     let n = pageIndex - 1;
@@ -19,9 +32,55 @@
     if (n >= pageTotal) n = pageTotal - 1;
     pageIndex = n;
   }
+
+  function handleDragEnter(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    isDragging = true;
+  }
+
+  function handleDragLeave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    isDraggig = false;
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "copy";
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    openFile(e.dataTransfer.files);
+  }
+
+  async function openFile(filepaths) {
+    if (!Array.isArray(filepaths)) filepaths = [filepaths];
+    if (filepaths.length == 1) {
+      isLoading = true;
+      loadedChat = filepaths[0];
+      let lines = await window.electronAPI.invokeFileCountLines(filepaths[0]);
+      pageTotal = Math.ceil(lines / pageLines);
+      isLoading = false;
+    } else if (filepaths.length > 1) {
+      errorData = {title: "Error", description: "Too many files dropped"};
+    } else {
+      isLoading = false;
+      errorData = {title: "Error", description: "Not enough files dropped"};
+    }
+  }
+
+  async function loadSectionOfFile(filepath, pageIndex) {
+    let offset = pageIndex * pageLines;
+    let lines = await window.electronAPI.invokeFileReadLines(filepath, offset, offset + pageLines);
+    return ChatData.loadFile(lines);
+  }
 </script>
 
-<div class="chat-section">
+<div class="chat-section" on:dragenter={handleDragEnter} on:dragleave={handleDragLeave} on:dragover={handleDragOver} on:drop={handleDrop}>
   {#if isLoading}
     <div class="show-center">
       <div class="mdc-typography--headline5">Loading...</div>
@@ -35,19 +94,26 @@
       <div class="mdc-typography--headline5">No chat loaded</div>
     </div>
   {:else}
-    <div class="view">
-      <!-- chat view -->
-    </div>
-    <div class="pagnation">
-      <IconButton class="material-icons" on:click={leftClick}>chevron_left</IconButton>
-      <Select bind:value={pageIndex}>
-        {#each Array.from(Array(pageTotal).keys()) as i}
-          <Option value={i}>{i + 1}</Option>
-        {/each}
-      </Select>
-      <IconButton class="material-icons" on:click={rightClick}>chevron_right</IconButton>
-    </div>
+    {#await loadSectionOfFile(loadedChat, pageIndex)}
+      <div class="show-center">
+        <div class="mdc-typography--headline5">Loading messages...</div>
+      </div>
+    {:then x}
+      <div class="view">
+        <ChatBubbleList data={x} />
+      </div>
+      <div class="pagnation">
+        <IconButton class="material-icons" on:click={leftClick}>chevron_left</IconButton>
+        <Select bind:value={pageIndex}>
+          {#each Array.from(Array(pageTotal).keys()) as i}
+            <Option value={i}>{i + 1}</Option>
+          {/each}
+        </Select>
+        <IconButton class="material-icons" on:click={rightClick}>chevron_right</IconButton>
+      </div>
+    {/await}
   {/if}
+  <ErrorDialog open={errorData != null} title={errorData?.title} description={errorData?.description} />
 </div>
 
 <style>
@@ -63,6 +129,7 @@
 
   .chat-section > .view {
     height: 100%;
+    overflow-y: auto;
   }
 
   .chat-section > .pagnation {

@@ -7,11 +7,13 @@
   "description": "A program for viewing WhatsApp exported chats in a nice GUI with chat bubbles.",
   "main": "src/index.js",
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "start": "NODE_ENV=development concurrently 'yarn run web:watch' 'sleep 1 && yarn run electron:start'",
     "web:watch": "vite --port 3000",
     "electron:start": "electron src",
-    "build": "vite build && electron-builder",
-    "prepare": "npm run smui-theme-light && npm run smui-theme-dark",
+    "build": "vite build",
+    "bin": "yarn build && electron-builder",
+    "prepare": "yarn smui-theme-light && yarn smui-theme-dark",
     "smui-theme-light": "smui-theme compile src/renderer/public/smui.gen.css -i src/renderer/theme",
     "smui-theme-dark": "smui-theme compile src/renderer/public/smui-dark.gen.css -i src/renderer/theme/dark"
   },
@@ -59,8 +61,13 @@
   "homepage": "https://software.onpointcoding.net/whatsappexportviewer",
   "devDependencies": {
     "@material/typography": "^14.0.0",
+    "@smui/button": "^7.0.0-beta.0",
+    "@smui/dialog": "^7.0.0-beta.0",
     "@smui/icon-button": "^7.0.0-beta.0",
+    "@smui/layout-grid": "^7.0.0-beta.0",
+    "@smui/list": "^7.0.0-beta.0",
     "@smui/select": "^7.0.0-beta.0",
+    "@smui/tooltip": "^7.0.0-beta.0",
     "@smui/top-app-bar": "^7.0.0-beta.0",
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "concurrently": "^7.0.0",
@@ -69,6 +76,7 @@
     "electron-updater": "^5.3.0",
     "smui-theme": "^7.0.0-beta.0",
     "svelte": "^3.44.0",
+    "svelte-markdown": "^0.2.3",
     "vite": "^3.1.8"
   },
   "dependencies": {

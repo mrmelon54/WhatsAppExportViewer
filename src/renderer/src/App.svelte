@@ -14,12 +14,6 @@
   let loadedApp = false;
 
   onMount(async () => {
-    window.electronAPI.handleFileOpen((event, args) => {
-      console.log("GOT file:open", event, args);
-    });
-    config.subscribe(a => {
-      console.info(a);
-    });
     config.set(await window.electronAPI.invokeLoadConfig());
     loadedApp = true;
   });
@@ -48,5 +42,6 @@
 
   #main-content {
     height: 100%;
+    overflow-y: hidden;
   }
 </style>

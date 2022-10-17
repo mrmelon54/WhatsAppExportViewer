@@ -22,7 +22,7 @@ function getMenuTemplate(mainWindow, funcs) {
           click() {
             // construct the select file dialog
             dialog
-              .showOpenDialog({
+              .showOpenDialog(mainWindow, {
                 properties: ["openFile"],
               })
               .then(function (fileObj) {

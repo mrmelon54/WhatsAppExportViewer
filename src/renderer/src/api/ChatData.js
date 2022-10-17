@@ -1,5 +1,5 @@
 import ChatMessage from "./ChatMessage";
-import ChatMessageSides from "./ChatMessageSides";
+import {LEFT, MIDDLE, RIGHT} from "./ChatMessageSides";
 
 const invalidFormatError = `
 It seems that your log file was unable to be read.
@@ -16,11 +16,12 @@ class ChatData {
   }
 }
 
-ChatData.loadFile = (contents) => {
-  const lines = contents.split("\n");
-  const regexOne = /^\[?(?<date>[0-9]{1,2}[\/\.][0-9]{1,2}[\/\.]([0-9]{2}|[0-9]{4})|[0-9]{4}-[0-9]{2}-[0-9]{2}),? (?<time>[0-9]{1,2}\:[0-9]{1,2}(?:\:[0-9]{2})?(?: ?[ap]\.?m\.?)?)(?:\]| \-) (?<data>.+)$/i;
+ChatData.loadFile = contents => {
+  const lines = contents;
+  const regexOne =
+    /^\[?(?<date>[0-9]{1,2}[\/\.][0-9]{1,2}[\/\.]([0-9]{2}|[0-9]{4})|[0-9]{4}-[0-9]{2}-[0-9]{2}),? (?<time>[0-9]{1,2}\:[0-9]{1,2}(?:\:[0-9]{2})?(?: ?[ap]\.?m\.?)?)(?:\]| \-) (?<data>.+)$/i;
   const regexTwo = /^(?<name>.+?)\: (?<message>.+)$/;
-  const str = contents;
+  const str = contents.join("\n");
   let lastDate = "";
 
   let messages = [];
@@ -39,19 +40,19 @@ ChatData.loadFile = (contents) => {
       }
     } else {
       if (m.groups.date != lastDate) {
-        messages.push(new ChatMessage("", m.groups.date, m.groups.date, "", ChatMessageSides.MIDDLE));
+        messages.push(new ChatMessage("", m.groups.date, m.groups.date, "", MIDDLE));
         lastDate = m.groups.date;
       }
       let d = regexTwo.exec(m.groups.data);
       if (d === null) {
-        messages.push(new ChatMessage("", m.groups.data, m.groups.date, m.groups.time, ChatMessageSides.MIDDLE));
+        messages.push(new ChatMessage("", m.groups.data, m.groups.date, m.groups.time, MIDDLE));
       } else {
-        messages.push(new ChatMessage(d.groups.name, d.groups.message, m.groups.date, m.groups.time, ChatMessageSides.LEFT));
+        messages.push(new ChatMessage(d.groups.name, d.groups.message, m.groups.date, m.groups.time, LEFT));
       }
     }
   }
 
-  return bigError ? new ChatData("", [new ChatMessage("", invalidFormatError, "", "", ChatMessageSides.MIDDLE)]) : new ChatData("", messages);
+  return bigError ? new ChatData("", [new ChatMessage("", invalidFormatError, "", "", MIDDLE)]) : new ChatData("", messages);
 };
 
 export default ChatData;

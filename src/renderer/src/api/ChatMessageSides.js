@@ -1,7 +1,5 @@
-class ChatMessageSides {}
+const LEFT = Symbol("LEFT");
+const MIDDLE = Symbol("MIDDLE");
+const RIGHT = Symbol("RIGHT");
 
-ChatMessageSides.LEFT = Symbol("LEFT");
-ChatMessageSides.RIGHT = Symbol("RIGHT");
-ChatMessageSides.MIDDLE = Symbol("MIDDLE");
-
-export default ChatMessageSides;
+export {LEFT, MIDDLE, RIGHT};

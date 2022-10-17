@@ -1,23 +1,19 @@
 // This file is the entry point for the Electron application.
 
 const {autoUpdater} = require("electron-updater");
-const {app, BrowserWindow, Menu, dialog, ipcMain} = require("electron");
+const {app, BrowserWindow, Menu, dialog, ipcMain, shell} = require("electron");
 const {getMenuTemplate} = require("./menu");
 const fs = require("fs");
 const path = require("path");
-const {default: readLinesN2M} = require("./utils/ReadLinesN2M");
-const {default: countLines} = require("./utils/CountLines");
+const readLinesN2M = require("./utils/ReadLinesN2M");
+const countLines = require("./utils/CountLines");
 const makeDir = require("make-dir");
-const {resolveEnvPrefix} = require("vite");
 
 var currentPackage;
 
 if (path.basename(__dirname) == "app.asar") {
   console.log("Package info hidden in app.asar");
   let d = path.dirname(__dirname);
-  fs.readdirSync(d).forEach(file => {
-    console.log(file);
-  });
   currentPackage = JSON.parse(fs.readFileSync(path.join(d, "app.asar", "package.json"), "utf8"));
 } else {
   currentPackage = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"));
@@ -62,6 +58,11 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
   });
+  win.webContents.on("will-navigate", (_event, url) => {
+    if (url.startsWith("file://") || url.startsWith("http://localhost:3000/")) return;
+    _event.preventDefault();
+    shell.openExternal(url);
+  });
 
   const menu = Menu.buildFromTemplate(getMenuTemplate(win, funcs));
   Menu.setApplicationMenu(menu);
@@ -85,29 +86,23 @@ function createWindow() {
   });
 
   app.whenReady().then(() => {
+    ipcMain.handle("file:countLines", async (_, p) => await new Promise((resolve, _) => countLines(p, n => resolve(n))));
     ipcMain.handle(
-      "file:countLines",
-      (_event, p) =>
-        new Promise(resolve => {
-          countLines(p, function (n) {
-            resolve(n);
-          });
+      "file:readLines",
+      async (_, p, n, m) =>
+        await new Promise((resolve, _) => {
+          let lines = [];
+          readLinesN2M(
+            p,
+            n,
+            m,
+            line => lines.push(line),
+            () => resolve(lines),
+          );
         }),
     );
-    ipcMain.handle("file:readLines", (_event, p, n, m) => {
-      return new Promise(resolve => {
-        let lines = [];
-        readLinesN2M(
-          p,
-          n,
-          m,
-          line => lines.push(line),
-          () => resolve(lines),
-        );
-      });
-    });
     ipcMain.handle("config:load", () => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve, _) => {
         fs.readFile(path.join(appPaths.config, "config.json"), {encoding: "utf8"}, (error, data) => {
           if (error) resolve(defaultConfig());
           else {
