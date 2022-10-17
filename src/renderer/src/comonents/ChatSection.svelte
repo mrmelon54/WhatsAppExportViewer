@@ -42,7 +42,7 @@
   function handleDragLeave(e) {
     e.preventDefault();
     e.stopPropagation();
-    isDraggig = false;
+    isDragging = false;
   }
 
   function handleDragOver(e) {
@@ -54,10 +54,12 @@
   function handleDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-    openFile(e.dataTransfer.files);
+    openFile(Array.from(e.dataTransfer.files).map(x => x.path));
+    isDragging = false;
   }
 
   async function openFile(filepaths) {
+    console.log("Opening file:", filepaths);
     if (!Array.isArray(filepaths)) filepaths = [filepaths];
     if (filepaths.length == 1) {
       isLoading = true;
@@ -80,7 +82,13 @@
   }
 </script>
 
-<div class="chat-section" on:dragenter={handleDragEnter} on:dragleave={handleDragLeave} on:dragover={handleDragOver} on:drop={handleDrop}>
+<div
+  class="chat-section {isDragging ? 'drag-on' : ''}"
+  on:dragenter={handleDragEnter}
+  on:dragleave={handleDragLeave}
+  on:dragover={handleDragOver}
+  on:drop={handleDrop}
+>
   {#if isLoading}
     <div class="show-center">
       <div class="mdc-typography--headline5">Loading...</div>
@@ -121,10 +129,33 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 500;
+  }
+
+  .chat-section.drag-on:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 600;
   }
 
   .chat-section > .show-center {
-    margin: auto;
+    margin: 16px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex-direction: row;
+    align-content: center;
+  }
+
+  .chat-section > .show-center > div {
+    width: 100%;
+    text-align: center;
   }
 
   .chat-section > .view {

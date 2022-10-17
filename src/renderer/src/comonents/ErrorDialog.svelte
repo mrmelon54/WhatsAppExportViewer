@@ -7,12 +7,20 @@
   export let description;
 </script>
 
-<Dialog bind:open on:close={() => this.hideDialog()} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-  <Title id="alert-dialog-title">{title}</Title>
-  <Content>
-    <div id="alert-dialog-description">{description}</div>
-  </Content>
-  <Actions>
-    <Button onClick={() => this.hideDialog()} color="primary">OK</Button>
-  </Actions>
-</Dialog>
+<div class="error-dialog">
+  <Dialog bind:open on:close={() => (open = false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+    <Title id="alert-dialog-title">{title}</Title>
+    <Content>
+      <div id="alert-dialog-description">{description}</div>
+    </Content>
+    <Actions>
+      <Button onClick={() => (open = false)} color="primary">OK</Button>
+    </Actions>
+  </Dialog>
+</div>
+
+<style>
+  .error-dialog {
+    z-index: 999;
+  }
+</style>

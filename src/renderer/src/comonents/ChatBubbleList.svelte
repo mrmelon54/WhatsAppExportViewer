@@ -4,22 +4,25 @@
   import {config} from "../utils/stores";
 
   export let data;
-  let firstName = null;
-
-  function getFirstName() {
-    if (firstName != null) return firstName;
+  let firstName = (() => {
+    let a;
     config.update(d => {
-      firstName = d.firstName;
+      a = d.firstName;
       return d;
     });
-  }
+    return a;
+  })();
+
+  config.subscribe(x => {
+    firstName = x.firstName;
+  });
 </script>
 
 {#each data.messages as bubble, i}
   <ChatBubble
-    side={bubble.name == getFirstName() ? RIGHT : bubble.side}
+    side={bubble.name == firstName ? RIGHT : bubble.side}
     key={i}
-    name={bubble.name == getFirstName() ? "" : bubble.name}
+    name={bubble.name == firstName ? "" : bubble.name}
     message={bubble.message}
     date={bubble.date}
     time={bubble.time}
