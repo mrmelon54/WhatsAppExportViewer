@@ -41,7 +41,10 @@
     },
     "win": {
       "icon": "./icon.ico",
-      "target": "nsis"
+      "target": [
+        "nsis",
+        "zip"
+      ]
     },
     "linux": {
       "icon": "./icon.icns",
