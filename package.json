@@ -1,8 +1,8 @@
 {
   "name": "whatsappexportviewer",
   "productName": "WhatsApp Export Viewer",
-  "copyright": "Copyright © 2022 OnPointCoding",
-  "appId": "net.onpointcoding.WhatsAppExportViewer",
+  "copyright": "Copyright © 2025 MrMelon54",
+  "appId": "com.mrmelon54.WhatsAppExportViewer",
   "version": "2.0.6",
   "description": "A program for viewing WhatsApp exported chats in a nice GUI with chat bubbles.",
   "main": "src/index.js",
@@ -18,10 +18,10 @@
     "smui-theme-dark": "smui-theme compile src/renderer/public/smui-dark.gen.css -i src/renderer/theme/dark"
   },
   "build": {
-    "appId": "net.onpointcoding.WhatsAppExportViewer",
+    "appId": "com.mrmelon54.WhatsAppExportViewer",
     "icon": "./icon.png",
     "productName": "WhatsApp Export Viewer",
-    "copyright": "Copyright © 2022 OnPointCoding",
+    "copyright": "Copyright © 2025 MrMelon54",
     "mac": {
       "category": "public.app-category.productivity",
       "hardenedRuntime": true,
@@ -65,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MrMelon54/WhatsAppExportViewer.git"
+    "url": "git+https://github.com/mrmelon54/WhatsAppExportViewer.git"
   },
   "author": {
     "name": "MrMelon54",
@@ -73,9 +73,9 @@
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MrMelon54/WhatsAppExportViewer/issues"
+    "url": "https://github.com/mrmelon54/WhatsAppExportViewer/issues"
   },
-  "homepage": "https://software.onpointcoding.net/whatsappexportviewer",
+  "homepage": "https://github.com/mrmelon54/WhatsAppExportViewer",
   "devDependencies": {
     "@material/typography": "^14.0.0",
     "@smui/button": "^8.0.0-beta.3",

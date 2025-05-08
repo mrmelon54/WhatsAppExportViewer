@@ -58,7 +58,7 @@ function getMenuTemplate(mainWindow, funcs) {
         {
           label: "Developer Website",
           click: async () => {
-            await shell.openExternal("https://software.onpointcoding.net/whatsappexportviewer");
+            await shell.openExternal("https://github.com/mrmelon54/WhatsAppExportViewer");
           },
         },
         {
