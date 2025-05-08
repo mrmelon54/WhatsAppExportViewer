@@ -5,6 +5,7 @@
   "appId": "com.mrmelon54.WhatsAppExportViewer",
   "version": "2.0.6",
   "description": "A program for viewing WhatsApp exported chats in a nice GUI with chat bubbles.",
+  "type": "module",
   "main": "src/index.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",

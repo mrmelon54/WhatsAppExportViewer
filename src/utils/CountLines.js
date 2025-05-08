@@ -1,9 +1,9 @@
-const fs = require("fs");
-const readline = require("readline");
+import {createReadStream} from "fs";
+import {createInterface} from "readline";
 
-function countLines(filename, func) {
-  const lineReader = readline.createInterface({
-    input: fs.createReadStream(filename),
+export function countLines(filename, func) {
+  const lineReader = createInterface({
+    input: createReadStream(filename),
   });
 
   let lineNumber = 0;
@@ -20,5 +20,3 @@ function countLines(filename, func) {
     }
   });
 }
-
-module.exports = countLines;

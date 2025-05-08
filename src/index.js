@@ -1,20 +1,22 @@
 // This file is the entry point for the Electron application.
 
-const {autoUpdater} = require("electron-updater");
-const {app, BrowserWindow, Menu, dialog, ipcMain, shell} = require("electron");
-const {getMenuTemplate} = require("./menu");
-const fs = require("fs");
-const path = require("path");
-const readLinesN2M = require("./utils/ReadLinesN2M");
-const countLines = require("./utils/CountLines");
-const makeDir = require("make-dir");
-const envPaths = require("env-paths");
+import electronUpdater from "electron-updater";
+import {app, BrowserWindow, Menu, dialog, ipcMain, shell} from "electron";
+import {getMenuTemplate} from "./menu.js";
+import fs from "fs";
+import path from "path";
+import {readLinesN2M} from "./utils/ReadLinesN2M.js";
+import {countLines} from "./utils/CountLines.js";
+import {makeDirectory} from "make-dir";
+import envPaths from "env-paths";
 
 // app paths
-const appPaths = envPaths.default("WhatsAppExportViewer");
+const appPaths = envPaths("WhatsAppExportViewer");
 console.log("Using app config path:", appPaths.config);
 
 var currentPackage;
+
+const __dirname = import.meta.dirname;
 
 if (path.basename(__dirname) == "app.asar") {
   console.log("Package info hidden in app.asar");
@@ -83,7 +85,7 @@ function createWindow() {
 }
 
 app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify();
+  electronUpdater.autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.whenReady().then(() => {
@@ -120,7 +122,7 @@ app.whenReady().then(() => {
   });
   ipcMain.handle("config:save", (_event, data) => {
     return new Promise((resolve, reject) => {
-      makeDir.sync(appPaths.config);
+      makeDirectory.sync(appPaths.config);
       fs.writeFile(path.join(appPaths.config, "config.json"), JSON.stringify(data, null, 2), error => {
         if (error) reject(error);
         else resolve();

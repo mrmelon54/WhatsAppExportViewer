@@ -1,9 +1,9 @@
-const fs = require("fs");
-const readline = require("readline");
+import {createReadStream} from "fs";
+import {createInterface} from "readline";
 
-function readLinesN2M(filename, n, m, func, onClose) {
-  const lineReader = readline.createInterface({
-    input: fs.createReadStream(filename),
+export function readLinesN2M(filename, n, m, func, onClose) {
+  const lineReader = createInterface({
+    input: createReadStream(filename),
   });
 
   let lineNumber = 0;
@@ -22,5 +22,3 @@ function readLinesN2M(filename, n, m, func, onClose) {
     }
   });
 }
-
-module.exports = readLinesN2M;

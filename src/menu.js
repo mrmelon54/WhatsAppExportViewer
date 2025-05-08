@@ -1,8 +1,8 @@
-const {shell, dialog} = require("electron");
+import {shell, dialog} from "electron";
 
 const isMac = process.platform === "darwin";
 
-function getMenuTemplate(mainWindow, funcs) {
+export function getMenuTemplate(mainWindow, funcs) {
   return [
     ...(isMac
       ? [
@@ -71,5 +71,3 @@ function getMenuTemplate(mainWindow, funcs) {
     },
   ];
 }
-
-module.exports = {getMenuTemplate};
