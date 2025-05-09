@@ -54,17 +54,15 @@
   function handleDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-    openFile(Array.from(e.dataTransfer.files).map(x => x.path));
+    openFile(e.dataTransfer.files);
     isDragging = false;
   }
 
   async function openFile(filepaths) {
-    console.log("Opening file:", filepaths);
-    if (!Array.isArray(filepaths)) filepaths = [filepaths];
     if (filepaths.length == 1) {
       isLoading = true;
-      loadedChat = filepaths[0];
-      let lines = await window.electronAPI.invokeFileCountLines(filepaths[0]);
+      loadedChat = await window.electronAPI.getDroppedFilePath(filepaths[0]);
+      let lines = await window.electronAPI.invokeFileCountLines(loadedChat);
       pageTotal = Math.ceil(lines / pageLines);
       isLoading = false;
     } else if (filepaths.length > 1) {

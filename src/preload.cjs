@@ -1,4 +1,4 @@
-const {contextBridge, ipcRenderer} = require("electron");
+const {contextBridge, ipcRenderer, webUtils} = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
   // Receive trigger
@@ -9,4 +9,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
   invokeFileReadLines: (p, n, m) => ipcRenderer.invoke("file:readLines", p, n, m),
   invokeLoadConfig: () => ipcRenderer.invoke("config:load"),
   invokeSaveConfig: data => ipcRenderer.invoke("config:save", data),
+
+  getDroppedFilePath: file => webUtils.getPathForFile(file),
 });
