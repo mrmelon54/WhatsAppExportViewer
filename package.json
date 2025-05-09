@@ -51,10 +51,7 @@
       "icon": "./icon.icns",
       "target": [
         "deb",
-        "rpm",
-        "pacman",
         "AppImage",
-        "zip",
         "tar.gz"
       ],
       "category": "Utility"
