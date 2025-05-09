@@ -3,7 +3,7 @@
   "productName": "WhatsApp Export Viewer",
   "copyright": "Copyright © 2025 MrMelon54",
   "appId": "com.mrmelon54.WhatsAppExportViewer",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "A program for viewing WhatsApp exported chats in a nice GUI with chat bubbles.",
   "type": "module",
   "main": "src/index.js",
