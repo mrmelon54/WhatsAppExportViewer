@@ -120,9 +120,9 @@ app.whenReady().then(() => {
       });
     });
   });
-  ipcMain.handle("config:save", (_event, data) => {
-    return new Promise((resolve, reject) => {
-      makeDirectory.sync(appPaths.config);
+  ipcMain.handle("config:save", async (_event, data) => {
+    await makeDirectory(appPaths.config);
+    return await new Promise((resolve, reject) => {
       fs.writeFile(path.join(appPaths.config, "config.json"), JSON.stringify(data, null, 2), error => {
         if (error) reject(error);
         else resolve();

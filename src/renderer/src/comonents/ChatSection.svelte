@@ -8,12 +8,12 @@
 
   const pageLines = 1000;
 
-  let pageIndex = 0;
-  let pageTotal = 5;
-  let isLoading = false;
-  let isDragging = false;
-  let loadedChat = null;
-  let errorData = null;
+  let pageIndex = $state(0);
+  let pageTotal = $state(5);
+  let isLoading = $state(false);
+  let isDragging = $state(false);
+  let loadedChat = $state(null);
+  let errorData = $state(null);
 
   onMount(() => {
     window.electronAPI.handleFileOpen((_event, args) => {
@@ -82,12 +82,13 @@
   }
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="chat-section {isDragging ? 'drag-on' : ''}"
-  on:dragenter={handleDragEnter}
-  on:dragleave={handleDragLeave}
-  on:dragover={handleDragOver}
-  on:drop={handleDrop}
+  ondragenter={handleDragEnter}
+  ondragleave={handleDragLeave}
+  ondragover={handleDragOver}
+  ondrop={handleDrop}
 >
   {#if isLoading}
     <div class="show-center">

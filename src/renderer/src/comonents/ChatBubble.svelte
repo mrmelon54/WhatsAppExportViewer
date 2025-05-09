@@ -1,14 +1,16 @@
-<script>
+<script lang="ts">
   import {Text, SecondaryText} from "@smui/list";
   import Tooltip, {Wrapper} from "@smui/tooltip";
   import {LEFT, MIDDLE, RIGHT} from "../api/ChatMessageSides";
   import SvelteMarkdown from "svelte-markdown";
 
-  export let side;
-  export let name;
-  export let message;
-  export let date;
-  export let time;
+  let {
+    side,
+    name,
+    message,
+    date,
+    time
+  } = $props();
 
   const sideClass = (() => {
     let z = {};
@@ -28,7 +30,7 @@
         </Text>
       </div>
     {:else}
-      <div />
+      <div></div>
     {/if}
     <div class="wrap-message">
       <SvelteMarkdown source={message} />

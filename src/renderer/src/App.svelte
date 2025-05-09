@@ -12,8 +12,8 @@
   import "@/assets/fonts/roboto-mono/roboto-mono.css";
   import SettingsDialog from "./comonents/SettingsDialog.svelte";
 
-  let loadedApp = false;
-  let showSettings = false;
+  let loadedApp = $state(false);
+  let showSettings = $state(false);
 
   onMount(async () => {
     config.set(await window.electronAPI.invokeLoadConfig());
@@ -27,8 +27,8 @@
       <Section>
         <Title>WhatsApp Export Viewer</Title>
       </Section>
-      <Section align="end" toolbar on:click={() => (showSettings = true)}>
-        <IconButton class="material-icons" aria-label="Settings">settings</IconButton>
+      <Section align="end" toolbar>
+        <IconButton class="material-icons" aria-label="Settings" onclick={() => (showSettings = true)}>settings</IconButton>
       </Section>
     </Row>
   </TopAppBar>
