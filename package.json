@@ -87,7 +87,7 @@
     "@smui/top-app-bar": "^8.0.0-beta.3",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "concurrently": "^9.1.2",
-    "electron": "^36.2.0",
+    "electron": "^36.8.1",
     "electron-builder": "^26.0.12",
     "smui-theme": "^8.0.0-beta.3",
     "svelte": "^5.16.1",
