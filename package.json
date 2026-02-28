@@ -90,7 +90,7 @@
     "electron": "^36.8.1",
     "electron-builder": "^26.0.12",
     "smui-theme": "^8.0.0-beta.3",
-    "svelte": "^5.16.1",
+    "svelte": "^5.53.5",
     "svelte-markdown": "^0.4.1",
     "vite": "^6.4.1"
   },
