@@ -31,4 +31,4 @@ jobs:
           fi
           yarn run electron-builder $releaseArgs
         env:
-          GH_TOKEN: ${{ secrets.github.token }}
+          GH_TOKEN: ${{ secrets.github_token }}
