@@ -19,17 +19,15 @@ jobs:
         with:
           node-version: 25
 
-      - run: yarn add electron-builder --dev
+      - name: Install dependencies
+        run: yarn install --immutable --immutable-cache --check-cache
 
       - name: Build/release Electron app
-        uses: johannesjo/action-electron-builder@v1
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
-
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          releaseArgs=""
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            releaseArgs="--publish always"
+          fi
+          yarn run electron-builder "${releaseArgs}"
         env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
+          GH_TOKEN: ${{ secrets.github.token }}
