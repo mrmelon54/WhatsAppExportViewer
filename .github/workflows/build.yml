@@ -23,6 +23,7 @@ jobs:
         run: yarn install --immutable --immutable-cache --check-cache
 
       - name: Build/release Electron app
+        shell: bash
         run: |
           releaseArgs=""
           if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
