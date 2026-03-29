@@ -25,10 +25,6 @@ jobs:
       - name: Build/release Electron app
         shell: bash
         run: |
-          releaseArgs=""
-          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            releaseArgs="--publish always"
-          fi
-          yarn build && yarn run electron-builder $releaseArgs
+          yarn build && yarn run electron-builder --publish onTag
         env:
           GH_TOKEN: ${{ secrets.github_token }}
