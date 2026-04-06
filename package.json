@@ -92,7 +92,7 @@
     "smui-theme": "^8.0.3",
     "svelte": "^5.55.0",
     "svelte-markdown": "^0.4.1",
-    "vite": "^8.0.3"
+    "vite": "^8.0.5"
   },
   "dependencies": {
     "electron-updater": "^6.8.3",
