@@ -14,6 +14,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v6
 
+      - run: npm install -g corepack --force
       - name: Enable Corepack
         run: corepack enable
       - name: Install Node.js, NPM and Yarn
