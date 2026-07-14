@@ -23,7 +23,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --immutable --immutable-cache --check-cache
+        run: yarn
 
       - name: Build/release Electron app
         shell: bash
