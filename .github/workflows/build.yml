@@ -14,10 +14,13 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v6
 
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v6
         with:
-          node-version: 25
+          node-version: 26
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --immutable --immutable-cache --check-cache
