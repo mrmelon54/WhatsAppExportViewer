@@ -86,13 +86,13 @@
     "@smui/tooltip": "^9.0.1",
     "@smui/top-app-bar": "^9.0.1",
     "@sveltejs/vite-plugin-svelte": "^7.2.0",
-    "concurrently": "^10.0.3",
-    "electron": "^43.1.0",
-    "electron-builder": "26.15.6",
+    "concurrently": "^10.0.4",
+    "electron": "^43.2.0",
+    "electron-builder": "26.15.3",
     "smui-theme": "^9.0.1",
-    "svelte": "^5.56.4",
+    "svelte": "^5.56.8",
     "svelte-markdown": "^0.4.1",
-    "vite": "^8.1.4"
+    "vite": "^8.1.5"
   },
   "dependencies": {
     "electron-updater": "^6.8.9",
