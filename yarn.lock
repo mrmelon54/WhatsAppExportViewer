@@ -1822,9 +1822,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^44.1.0":
-  version: 44.1.0
-  resolution: "electron@npm:44.1.0"
+"electron@npm:^44.9.1":
+  version: 44.9.1
+  resolution: "electron@npm:44.9.1"
   dependencies:
     "@electron-internal/extract-zip": "npm:^1.0.1"
     "@electron/get": "npm:^5.0.0"
@@ -1832,7 +1832,7 @@ __metadata:
   bin:
     electron: cli.js
     install-electron: install.js
-  checksum: 10/915d2cf0517b483c55b64c70ad0c8297603423f9acc49d85909989cabf8232c1f5b443e1a46bde70a6b6bd129bbf37dd4345f53dadabc6b9b6f84cf9ffaf825e
+  checksum: 10/776483fb3447c8bef910c88dddcce8e326e88c773c53d562a81b2ada3297d329863955486106066ff4058f843667ae05397fa363f6716b99734fdd623d177e16
   languageName: node
   linkType: hard
 
@@ -4312,7 +4312,7 @@ __metadata:
     "@smui/top-app-bar": "npm:^9.0.2"
     "@sveltejs/vite-plugin-svelte": "npm:^7.3.0"
     concurrently: "npm:^10.0.5"
-    electron: "npm:^44.1.0"
+    electron: "npm:^44.9.1"
     electron-builder: "npm:26.15.7"
     electron-updater: "npm:^6.8.9"
     env-paths: "npm:^4.0.0"
